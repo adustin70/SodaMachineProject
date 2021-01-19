@@ -26,7 +26,7 @@ namespace SodaMachine
         //A method to fill the sodamachines register with coin objects.
         public void FillRegister()
         {
-           
+            
         }
         //A method to fill the sodamachines inventory with soda can objects.
         public void FillInventory()
@@ -55,8 +55,11 @@ namespace SodaMachine
         //Gets a soda from the inventory based on the name of the soda.
         private Can GetSodaFromInventory(string nameOfSoda)
         {
-          
-        }
+            for (int i = 0; i < _inventory.Count; i++)
+            {
+                
+            }
+        }// need clarty on how to do this ^^
 
         //This is the main method for calculating the result of the transaction.
         //It takes in the payment from the customer, the soda object they selected, and the customer who is purchasing the soda.
@@ -67,7 +70,8 @@ namespace SodaMachine
         //If the payment does not meet the cost of the soda: dispense payment back to the customer.
         private void CalculateTransaction(List<Coin> payment, Can chosenSoda, Customer customer)
         {
-           
+
+
         }
         //Takes in the value of the amount of change needed.
         //Attempts to gather all the required coins from the sodamachine's register to make change.
@@ -75,34 +79,62 @@ namespace SodaMachine
         //If the change cannot be made, return null.
         private List<Coin> GatherChange(double changeValue)
         {
-            
+            if (RegisterHasCoin() == true)
+            {
+                return _register;
+            }
+            else
+            {
+                return null;
+            }
         }
         //Reusable method to check if the register has a coin of that name.
         //If it does have one, return true.  Else, false.
         private bool RegisterHasCoin(string name)
         {
-           
+            // I'd like to see if this register has the coin I want
+            // it returns a bool value
+            // I have a string name to work with
+            // I can access a List<Coin> _register to search
+
+            bool coinFound = false;
+
+            foreach(Coin coin in _register)
+            {
+                if(coin.Name == name)
+                {
+                    coinFound = true;
+                    break;
+                }
+            }
+            return coinFound;
+   
         }
         //Reusable method to return a coin from the register.
         //Returns null if no coin can be found of that name.
         private Coin GetCoinFromRegister(string name)
         {
-            
+            if (RegisterHasCoin(name) == true)
+            {
+
+            }
         }
         //Takes in the total payment amount and the price of can to return the change amount.
         private double DetermineChange(double totalPayment, double canPrice)
         {
-            
+            double changeDue = totalPayment - canPrice;
+            return changeDue;
         }
-        //Takes in a list of coins to returnt he total value of the coins as a double.
+        //Takes in a list of coins to return the total value of the coins as a double.
         private double TotalCoinValue(List<Coin> payment)
         {
-           
+            double totalValue = payment.Count;//Don't think this is right
+            return totalValue;
         }
         //Puts a list of coins into the soda machines register.
         private void DepositCoinsIntoRegister(List<Coin> coins)
         {
-           
+            _register.AddRange(coins);
         }
     }
 }
