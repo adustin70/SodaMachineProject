@@ -31,7 +31,7 @@ namespace SodaMachine
         //A method to fill the sodamachines inventory with soda can objects.
         public void FillInventory()
         {
-            
+            _inventory.AddRange();
         }
         //Method to be called to start a transaction.
         //Takes in a customer which can be passed freely to which ever method needs it.
@@ -55,11 +55,15 @@ namespace SodaMachine
         //Gets a soda from the inventory based on the name of the soda.
         private Can GetSodaFromInventory(string nameOfSoda)
         {
-            for (int i = 0; i < _inventory.Count; i++)
+            foreach (Can can in _inventory)
             {
-                
+                if (can.Name == nameOfSoda)
+                {
+                    return can;                    
+                }
             }
-        }// need clarty on how to do this ^^
+            return null;
+        }
 
         //This is the main method for calculating the result of the transaction.
         //It takes in the payment from the customer, the soda object they selected, and the customer who is purchasing the soda.
@@ -79,14 +83,14 @@ namespace SodaMachine
         //If the change cannot be made, return null.
         private List<Coin> GatherChange(double changeValue)
         {
-            if (RegisterHasCoin() == true)
+            foreach (Coin coin in _register)
             {
-                return _register;
+                if (coin.Value == changeValue)
+                {
+                    return _register;//Feels off
+                }
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
         //Reusable method to check if the register has a coin of that name.
         //If it does have one, return true.  Else, false.
@@ -114,10 +118,14 @@ namespace SodaMachine
         //Returns null if no coin can be found of that name.
         private Coin GetCoinFromRegister(string name)
         {
-            if (RegisterHasCoin(name) == true)
+            foreach (Coin coin in _register)
             {
-
+                if (coin.Name == name)
+                {
+                    return coin;
+                }
             }
+            return null;
         }
         //Takes in the total payment amount and the price of can to return the change amount.
         private double DetermineChange(double totalPayment, double canPrice)
