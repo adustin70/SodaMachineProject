@@ -106,25 +106,36 @@ namespace SodaMachine
         //If the payment does not meet the cost of the soda: dispense payment back to the customer.
         private void CalculateTransaction(List<Coin> payment, Can chosenSoda, Customer customer)
         {
+            UserInterface.DisplayCost(chosenSoda);
+            double change = DetermineChange(TotalCoinValue(payment), chosenSoda.Price);
+            GatherChange(change);
             if (TotalCoinValue(payment) > chosenSoda.Price)
             {
-                double change = DetermineChange(TotalCoinValue(payment), chosenSoda.Price);
-                GatherChange(change);
 
-                if (GatherChange(change) == null)
+                if (GatherChange(change) == _register)
                 {
-                    TotalCoinValue(payment);
+                    GetSodaFromInventory(chosenSoda.Name);
+                    customer.AddCanToBackpack(chosenSoda);
+                    customer.AddCoinsIntoWallet(GatherChange(change));
+                    UserInterface.EndMessage(chosenSoda.Name, change);
+                }
+                else
+                {
+                    Console.WriteLine("Not enough change in register returning your payment");
+                    customer.AddCoinsIntoWallet(payment);
                 }
 
-                GetSodaFromInventory(chosenSoda.Name);
             }
             else if (TotalCoinValue(payment) == chosenSoda.Price)
             {
                 GetSodaFromInventory(chosenSoda.Name);
+                customer.AddCanToBackpack(chosenSoda);
+                UserInterface.EndMessage(chosenSoda.Name, change);
             }
             else if (TotalCoinValue(payment) < chosenSoda.Price)
             {
-                TotalCoinValue(payment);
+                Console.WriteLine("You have entered insufficent change now returning your payment");
+                customer.AddCoinsIntoWallet(payment);
             }
         }
         //Takes in the value of the amount of change needed.
