@@ -31,10 +31,19 @@ namespace SodaMachine
             Dime dime = new Dime();
             Quarter quarter = new Quarter();
 
-            _register.Add(penny);
-            _register.Add(nickel);
-            _register.Add(dime);
-            _register.Add(quarter);
+            for (int i = 0; i < 50; i++)
+            {
+                _register.Add(penny);
+            }
+            for (int i = 0; i < 20; i++)
+            {
+                _register.Add(nickel);
+                _register.Add(quarter);
+            }
+            for (int i = 0; i < 10; i++)
+            {
+                _register.Add(dime);
+            } 
         }
         //A method to fill the sodamachines inventory with soda can objects.
         public void FillInventory()
@@ -43,9 +52,12 @@ namespace SodaMachine
             Cola cola = new Cola();
             OrangeSoda orangeSoda = new OrangeSoda();
 
-            _inventory.Add(rootBeer);
-            _inventory.Add(cola);
-            _inventory.Add(orangeSoda);
+            for (int i = 0; i < 20; i++)
+            {
+                _inventory.Add(rootBeer);
+                _inventory.Add(cola);
+                _inventory.Add(orangeSoda);
+            }            
         }
         //Method to be called to start a transaction.
         //Takes in a customer which can be passed freely to which ever method needs it.
