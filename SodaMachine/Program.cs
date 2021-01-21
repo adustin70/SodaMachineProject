@@ -12,6 +12,7 @@ namespace SodaMachine
         {
             Simulation simulation = new Simulation();
             simulation.Simulate();
+            Console.ReadLine();
         }
     }
 }
