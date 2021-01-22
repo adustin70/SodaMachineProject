@@ -111,7 +111,7 @@ namespace SodaMachine
             if (TotalCoinValue(payment) > chosenSoda.Price)
             {
 
-                if (GatherChange(change) == _register)
+                if (GatherChange(change) == _register)//needs to change
                 {
                     GetSodaFromInventory(chosenSoda.Name);
                     customer.AddCanToBackpack(chosenSoda);
@@ -143,11 +143,15 @@ namespace SodaMachine
         //If the change cannot be made, return null.
         private List<Coin> GatherChange(double changeValue)
         {
-            foreach (Coin coin in _register)
-            {
-                if (coin.Value == changeValue)
+            List<Coin> totalChangeDue = new List<Coin>();            
+
+            foreach (Coin coin in _register)//Wanted to change to remove coin from register to add to new list and return that as change due
+            {//the way is was returned null if coin value wasn't exact change value, it's still broken needed to finish this and fixed method this one is called to
+                while (coin.Value != changeValue)
                 {
-                    return _register;
+                    _register.Remove(coin);
+                    totalChangeDue.Add(coin);
+                    return totalChangeDue;
                 }
             }
             return null;
