@@ -139,39 +139,47 @@ namespace SodaMachine
         //If the change cannot be made, return null.
         private List<Coin> GatherChange(double changeValue)
         {
-            List<Coin> totalChangeDue = new List<Coin>();            
-
-            foreach (Coin coin in _register)
+            List<Coin> totalChangeDue = new List<Coin>();
+            Coin coinFound = null;
+            while (changeValue > 0)
             {
-                changeValue = Math.Round(changeValue, 2);
-                if (coin.Value == .25 && changeValue >= 0.25)
+                if (changeValue >= .25)
                 {
-                    changeValue -= .25;
-                    _register.Remove(coin);
-                    totalChangeDue.Add(coin);
-                    return totalChangeDue;
+                    if (RegisterHasCoin("Quarter"))
+                    {
+                        coinFound = GetCoinFromRegister("Quarter");
+                        totalChangeDue.Add(coinFound);
+                        changeValue -= coinFound.Value;
+                    }
                 }
-                else if (coin.Value == .10 && changeValue >= 0.10)
+                else if (changeValue >= .10)
                 {
-                    changeValue -= .10;
-                    _register.Remove(coin);
-                    totalChangeDue.Add(coin);
-                    return totalChangeDue;
+                    if (RegisterHasCoin("Dime"))
+                    {
+                        coinFound = GetCoinFromRegister("Dime");
+                        totalChangeDue.Add(coinFound);
+                        changeValue -= coinFound.Value;
+                    }
                 }
-                else if (coin.Value == .05 && changeValue >= .05)
+                else if (changeValue >= .05)
                 {
-                    changeValue -= .05;
-                    _register.Remove(coin);
-                    totalChangeDue.Add(coin);
-                    return totalChangeDue;
+                    if (RegisterHasCoin("Nickle"))
+                    {
+                        coinFound = GetCoinFromRegister("Nickle");
+                        totalChangeDue.Add(coinFound);
+                        changeValue -= coinFound.Value;
+                    }
                 }
-                else if (coin.Value == .01 && changeValue >= .01)
+                else if (changeValue >= .01)
                 {
-                    changeValue -= .01;
-                    _register.Remove(coin);
-                    totalChangeDue.Add(coin);
-                    return totalChangeDue;
+                    if (RegisterHasCoin("Penny"))
+                    {
+                        coinFound = GetCoinFromRegister("Penny");
+                        totalChangeDue.Add(coinFound);
+                        changeValue -= coinFound.Value;
+                    }
                 }
+                return totalChangeDue;
             }
             return null;
         }
