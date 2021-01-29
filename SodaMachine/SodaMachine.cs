@@ -116,7 +116,7 @@ namespace SodaMachine
                 }
                 else
                 {
-                    Console.WriteLine("Not enough change in register returning your payment");
+                    UserInterface.DisplayError($"Not enough change in register returning payment");
                     customer.AddCoinsIntoWallet(payment);
                 }
 
@@ -129,7 +129,7 @@ namespace SodaMachine
             }
             else if (TotalCoinValue(payment) < chosenSoda.Price)
             {
-                Console.WriteLine("You have entered insufficent change now returning your payment");
+                UserInterface.DisplayError($"Insufficent payment for {chosenSoda.Name} returning payment");
                 customer.AddCoinsIntoWallet(payment);
             }
         }
