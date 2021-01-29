@@ -75,10 +75,6 @@ namespace SodaMachine
         //pass payment to the calculate transaction method to finish up the transaction based on the results.
         private void Transaction(Customer customer)
         {
-            //need to prompt user for desired soda
-            //need to grab soda from inventory            
-            //need to get the payment from user            
-            //need to pass payment to calculate transaction
             string userSodaChoice = UserInterface.SodaSelection(_inventory);
             CalculateTransaction(customer.GatherCoinsFromWallet(GetSodaFromInventory(userSodaChoice)), GetSodaFromInventory(userSodaChoice), customer);
             
@@ -111,7 +107,7 @@ namespace SodaMachine
             if (TotalCoinValue(payment) > chosenSoda.Price)
             {
 
-                if (GatherChange(change) == _register)//needs to change
+                if (GatherChange(change) != null)
                 {
                     GetSodaFromInventory(chosenSoda.Name);
                     customer.AddCanToBackpack(chosenSoda);
@@ -145,10 +141,33 @@ namespace SodaMachine
         {
             List<Coin> totalChangeDue = new List<Coin>();            
 
-            foreach (Coin coin in _register)//Wanted to change to remove coin from register to add to new list and return that as change due
-            {//the way is was returned null if coin value wasn't exact change value, it's still broken needed to finish this and fixed method this one is called to
-                while (coin.Value != changeValue)
+            foreach (Coin coin in _register)
+            {
+                changeValue = Math.Round(changeValue, 2);
+                if (coin.Value == .25 && changeValue >= 0.25)
                 {
+                    changeValue -= .25;
+                    _register.Remove(coin);
+                    totalChangeDue.Add(coin);
+                    return totalChangeDue;
+                }
+                else if (coin.Value == .10 && changeValue >= 0.10)
+                {
+                    changeValue -= .10;
+                    _register.Remove(coin);
+                    totalChangeDue.Add(coin);
+                    return totalChangeDue;
+                }
+                else if (coin.Value == .05 && changeValue >= .05)
+                {
+                    changeValue -= .05;
+                    _register.Remove(coin);
+                    totalChangeDue.Add(coin);
+                    return totalChangeDue;
+                }
+                else if (coin.Value == .01 && changeValue >= .01)
+                {
+                    changeValue -= .01;
                     _register.Remove(coin);
                     totalChangeDue.Add(coin);
                     return totalChangeDue;
@@ -160,11 +179,6 @@ namespace SodaMachine
         //If it does have one, return true.  Else, false.
         private bool RegisterHasCoin(string name)
         {
-            // I'd like to see if this register has the coin I want
-            // it returns a bool value
-            // I have a string name to work with
-            // I can access a List<Coin> _register to search
-
             bool coinFound = false;
 
             foreach(Coin coin in _register)
